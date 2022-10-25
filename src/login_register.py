@@ -13,7 +13,7 @@ def login():
     username = request.form['sname']
     passwd = request.form['pswd']
     if userdb.check_user(username, passwd):
-        return render_template('qiuzz.html')
+        return redirect("/quizz")
     else:
         redirect('/register')
 
@@ -34,3 +34,8 @@ def register():
 
             return redirect('/quizz')
     return render_template('register.html')
+
+
+@app.route("/quizz")
+def quiz_page():
+    return render_template('quizz.html')
