@@ -33,7 +33,7 @@ def result():
     cursor = connection.cursor()
 
     def checking(n):
-        cursor.execute(f"select exists(select * from users where student_name='{n}')")
+        cursor.execute(f"select exists(select * from users where student_name='{n}' and password='{d}')")
         return cursor.fetchone()[0]
 
     if checking(student_name):
