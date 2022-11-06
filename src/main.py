@@ -6,7 +6,7 @@ import random as r
 
 app = Flask(__name__)
 app.secret_key = urandom(20)
-testdb.create_table()
+testdb.create_users_table()
 
 
 @app.route("/")
@@ -69,39 +69,37 @@ def check_for_correct_answer(answer, correct_answer) -> bool:
     return False
 
 
-# @app.route("/quiz_setup", methods=["POST", "GET"])
-# def quiz_setup():
-#
-#     if request.method == "POST":
-#         return redirect("/quiz")
-#     return render_template('quiz_setup.html')
-
-# @app.route("/quiz_get", methods=["POST", "GET"])
-# def quiz_get(num_of_questions, category, difficulty, type):
-#     return requests.get(url=f'https://opentdb.com/api.php?amount={num_of_questions}&category={category}&difficulty={difficulty}&type={type}').json()
-
-
 @app.route("/quiz_setup", methods=["POST", "GET"])
-def quiz():
-    num_of_questions = request.form.get('num-of-questions')
-    category = request.form.get('category')
-    difficulty = request.form.get('difficulty')
-    type = request.form.get('type')
-    questions = requests.get(url=f'https://opentdb.com/api.php?amount={num_of_questions}&category={category}&difficulty={difficulty}&type={type}').json()
+def quiz_setup():
     if request.method == "POST":
-        score = 0
-        questions_list = []
+        name = request.form['quiz_name']
+        num_of_questions = request.form['number']
+        category = request.form['category']
+        difficulty = request.form['difficulty']
+        quiz_type = request.form['type']
+        questions = requests.get(url=f'https://opentdb.com/api.php?amount={num_of_questions}&category={category}&difficulty={difficulty}&type={quiz_type}').json()
+        testdb.create_quiz_table(name)
         for question in questions['results']:
-            questions_list.append(question['correct_answer'])
-            questions_list.append(question['incorrect_answers'][0])
-            questions_list.append(question['incorrect_answers'][1])
-            questions_list.append(question['incorrect_answers'][2])
-            return render_template('quiz.html', question=question['question'], answer1=questions_list[rand1],
-                                   answer2=questions_list[rand2],
-                                   answer3=questions_list[rand3],
-                                   answer4=questions_list[rand4],
-                                   score=score)
+            testdb.insert_questions(name, question['question'], question['correct_answer'], question['incorrect_answers'][0], question['incorrect_answers'][1], question['incorrect_answers'][2])
     return render_template('quiz_setup.html')
+
+
+# @app.route("/quiz_setup", methods=["POST", "GET"])
+# def quiz():
+#     if request.method == "POST":
+#         score = 0
+#         questions_list = []
+#         for question in questions['results']:
+#             questions_list.append(question['correct_answer'])
+#             questions_list.append(question['incorrect_answers'][0])
+#             questions_list.append(question['incorrect_answers'][1])
+#             questions_list.append(question['incorrect_answers'][2])
+#             return render_template('quiz.html', question=question['question'], answer1=questions_list[rand1],
+#                                    answer2=questions_list[rand2],
+#                                    answer3=questions_list[rand3],
+#                                    answer4=questions_list[rand4],
+#                                    score=score)
+#     return render_template('quiz_setup.html')
 
 
 if __name__ == "__main__":
