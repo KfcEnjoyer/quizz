@@ -5,8 +5,10 @@
     <title>Title</title>
 </head>
 <body>
-<p>Question {{question_number}}</p>
-<p>{{question}}</p>
+<div id="question_container">
+    <p>Question {{question}}</p>
+</div>
+
 <div id="answers">
 <form action="/quiz" method="post">
     <label for="answer1"></label>
@@ -21,5 +23,14 @@
 </div>
 <h1>Score is {{score}}</h1>
 <p><a href="/log-out">click here to log-out</a></p>
+<script>
+    var wrapper = document.getElementById("question_container");
+    var myHTML = '';
+    var num = {{number_of_questions}}
+    for (var i = 0; i < num; i++) {
+        myHTML += '<p>' + '{{question}}' + '</p>';
+    }
+    wrapper.innerHTML = myHTML
+      </script>
 </body>
 </html>

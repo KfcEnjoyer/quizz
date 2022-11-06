@@ -11,20 +11,17 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
 
-
-
 @app.route('/')
 def index():
     return render_template('index.html')
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def result():
     print(requests)
     print(request.form)
-    student_name = request.form['sname']
-    password = request.form['pswd']
-
-
+    student_name = request.form['username']
+    password = request.form['password']
     connection = psycopg2.connect(user="postgres",
                                   password="postgres",
                                   host="127.0.0.1",
@@ -32,11 +29,11 @@ def result():
                                   database="for_python")
     cursor = connection.cursor()
 
-    def checking(n):
+    def checking(n, d):
         cursor.execute(f"select exists(select * from users where student_name='{n}' and password='{d}')")
         return cursor.fetchone()[0]
 
-    if checking(student_name):
+    if checking(student_name, password):
         return f"Welcome, {student_name}"
     else:
         try:

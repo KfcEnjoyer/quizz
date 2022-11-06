@@ -14,11 +14,11 @@ def create_users_table():
         conn = connect()
         cur = conn.cursor()
         cur.execute(
-            "CREATE TABLE IF NOT EXISTS users (id SERIAL PRIMARY KEY, username varchar(80), "
+            "CREATE TABLE IF NOT EXISTS users (id SERIAL PRIMARY KEY, username varchar(80) UNIQUE, "
             "password varchar(80) NOT NULL)")
         conn.commit()
     except EOFError as err:
-        print("Error has occured", err)
+        print("Error has occurred", err)
     finally:
         cur.close()
         conn.close()
@@ -79,6 +79,32 @@ def insert_questions(name: str, question: str, correct_answer: str, incorrect_an
                     f" incorrect_answer3)"
                     f"VALUES ('{question}', '{correct_answer}', '{incorrect_answer1}', '{incorrect_answer2}', '{incorrect_answer3}')")
         conn.commit()
+    except EOFError as err:
+        print("Error has occurred", err)
+    finally:
+        cur.close()
+        conn.close()
+
+
+def get_questions(name: str):
+    try:
+        conn = connect()
+        cur = conn.cursor()
+        cur.execute(f"SELECT question, correct_answer, incorrect_answer1, incorrect_answer2, incorrect_answer3 FROM {name}")
+        return cur.fetchall()
+    except EOFError as err:
+        print("Error has occurred", err)
+    finally:
+        cur.close()
+        conn.close()
+
+
+def get_num_of_questions(name: str):
+    try:
+        conn = connect()
+        cur = conn.cursor()
+        cur.execute(f"SELECT count(*) FROM {name}")
+        return cur.fetchone()[0]
     except EOFError as err:
         print("Error has occurred", err)
     finally:

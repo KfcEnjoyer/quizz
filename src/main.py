@@ -9,26 +9,29 @@ app.secret_key = urandom(20)
 testdb.create_users_table()
 
 
-@app.route("/")
+@app.route('/')
 def home():
     return render_template('home.html')
 
 
-@app.route("/", methods=["POST"])
+@app.route('/login', methods=["POST", "GET"])
 def login():
-    username = request.form['sname']
-    passwd = request.form['pswd']
-    if testdb.check_user(username, passwd):
-        session['sname'] = username
-        return redirect("/quiz_setup")
-    else:
-        flash('Login is invalid!')
+    if request.method == "POST":
+        username = request.form['username']
+        passwd = request.form['password']
+        if testdb.check_user(username, passwd):
+            session['username'] = username
+            return redirect("/quiz_setup")
+        else:
+            flash('Login is invalid!')
+            return redirect('/register')
+    return render_template('login.html')
 
 
 @app.route("/register", methods=["POST", "GET"])
 def register():
     if request.method == "POST":
-        new_username = request.form['sname']
+        new_username = request.form['new-usname']
         psw1 = request.form['psw']
         psw2 = request.form['psw-repeat']
         if len(new_username) < 3:
@@ -39,7 +42,7 @@ def register():
             return redirect(url_for('register'))
         if psw1 != psw2:
             flash('Passwords are not matching!')
-            return redirect(url_for('register'))
+            return redirect(url_for('register.html'))
         testdb.add_user(new_username, psw1)
         return redirect("/quiz_setup")
     return render_template("register.html")
@@ -81,26 +84,20 @@ def quiz_setup():
         testdb.create_quiz_table(name)
         for question in questions['results']:
             testdb.insert_questions(name, question['question'], question['correct_answer'], question['incorrect_answers'][0], question['incorrect_answers'][1], question['incorrect_answers'][2])
+        return redirect('/quiz')
     return render_template('quiz_setup.html')
 
 
-# @app.route("/quiz_setup", methods=["POST", "GET"])
-# def quiz():
-#     if request.method == "POST":
-#         score = 0
-#         questions_list = []
-#         for question in questions['results']:
-#             questions_list.append(question['correct_answer'])
-#             questions_list.append(question['incorrect_answers'][0])
-#             questions_list.append(question['incorrect_answers'][1])
-#             questions_list.append(question['incorrect_answers'][2])
-#             return render_template('quiz.html', question=question['question'], answer1=questions_list[rand1],
-#                                    answer2=questions_list[rand2],
-#                                    answer3=questions_list[rand3],
-#                                    answer4=questions_list[rand4],
-#                                    score=score)
-#     return render_template('quiz_setup.html')
+@app.route("/quiz", methods=["POST", "GET"])
+def quiz():
+    score = 0
+    questions_list = []
+    questions = testdb.get_questions('quizz')
+    questions_num = testdb.get_num_of_questions('quizz')
+    for i in range(0, len(questions)):
+        return render_template('test.html',question1=questions[i][0], question2=questions[i+1][0])
 
 
+#'test.html', number_of_questions=questions_num, question=questions[i][0], answer1=questions[i][1], answer2=questions[i][2], answer3=questions[i][3], answer4=questions[i][4]
 if __name__ == "__main__":
     app.run(debug=True)
