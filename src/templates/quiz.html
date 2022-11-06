@@ -5,6 +5,21 @@
     <title>Title</title>
 </head>
 <body>
-
+<p>Question {{question_number}}</p>
+<p>{{question}}</p>
+<div id="answers">
+<form action="/quiz" method="post">
+    <label for="answer1"></label>
+<input type="submit" value="{{answer1}}" id="answer1" name="ans1">
+    <label for="answer2"></label>
+<input type="submit" value="{{answer2}}" id="answer2" name="ans2">
+    <label for="answer3"></label>
+<input type="submit" value="{{answer3}}" id="answer3" name="ans3">
+    <label for="answer4"></label>
+<input type="submit" value="{{answer4}}" id="answer4" name="ans4">
+    </form>
+</div>
+<h1>Score is {{score}}</h1>
+<p><a href="/log-out">click here to log-out</a></p>
 </body>
 </html>
