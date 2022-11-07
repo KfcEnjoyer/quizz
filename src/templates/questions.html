@@ -8,7 +8,7 @@
         <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
     <link href="//fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700,800&amp;subset=cyrillic" rel="stylesheet">
     <title>Awesome Quiz </title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='questionwebsite.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/questionwebsite.css') }}">
     <!-- FontAweome CDN Link for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
 </head>
@@ -20,7 +20,6 @@
             <div class="modal-content-container">
 
                 <h1>Congratulations, Quiz Completed.</h1>
-
                 <div class="grade-details">
                     <p>Attempts : 10</p>
                     <p>Wrong Answers : <span id="wrong-answers"></span></p>
@@ -40,12 +39,12 @@
         <div class="game-quiz-container">
 
             <div class="game-details-container">
-                <h1>Score : <span id="player-score"></span> / 10</h1>
-                <h1> Question : <span id="question-number"></span> / 10</h1>
+                <h1>Score : {{score}}<span id="player-score"></span> / {{num_of_quest}}</h1>
+                <h1> Question : {{question_num}}<span id="question-number"></span> / {{num_of_quest}}</h1>
             </div>
 
             <div class="game-question-container">
-                <h1 id="display-question"></h1>
+                <h1 id="display-question">{{question}}</h1>
             </div>
 
             <div class="game-options-container">
@@ -62,28 +61,28 @@
                     </div>
 
                </div>
-
+                <form method="get">
                 <span>
-                    <input type="radio" id="option-one" name="option" class="radio" value="optionA" />
-                    <label for="option-one" class="option" id="option-one-label"></label>
+                    <input type="radio" id="option-one" name="option" class="radio" value="{{answer1}}" />
+                    <label for="option-one" class="option" id="option-one-label">{{answer1}}</label>
                 </span>
 
 
                 <span>
-                    <input type="radio" id="option-two" name="option" class="radio" value="optionB" />
-                    <label for="option-two" class="option" id="option-two-label"></label>
+                    <input type="radio" id="option-two" name="option" class="radio" value="{{answer2}}" />
+                    <label for="option-two" class="option" id="option-two-label">{{answer2}}</label>
                 </span>
 
 
                 <span>
-                    <input type="radio" id="option-three" name="option" class="radio" value="optionC" />
-                    <label for="option-three" class="option" id="option-three-label"></label>
+                    <input type="radio" id="option-three" name="option" class="radio" value="{{answer3}}" />
+                    <label for="option-three" class="option" id="option-three-label">{{answer3}}</label>
                 </span>
 
 
                 <span>
-                    <input type="radio" id="option-four" name="option" class="radio" value="optionD" />
-                    <label for="option-four" class="option" id="option-four-label"></label>
+                    <input type="radio" id="option-four" name="option" class="radio" value="{{answer4}}" />
+                    <label for="option-four" class="option" id="option-four-label">{{answer4}}</label>
                 </span>
 
 
@@ -92,7 +91,7 @@
             <div class="next-button-container">
                 <button onclick="handleNextQuestion()">Next Question</button>
             </div>
-
+            </form>
         </div>
     </main>
     <script src="index.js"></script>

@@ -7,7 +7,23 @@
       <div id="myHTMLWrapper">
          <p>question1 {{question1}}</p>
          <p>question2 {{question2}}</p>
-      </div>
+         <div id="count">
 
+         </div>
+      </div>
+      <form>
+         <button type="button" value="niga" id="butt" onclick="iPlus(i)">niga</button>
+         </form>
+   <script>
+      var p = document.getElementById("count")
+      var i = 0
+      p.innerHTML = i;
+      const iPlus = () => {
+         i++
+         p.innerHTML = i;
+      };
+      p.addEventListener("click", iPlus);
+
+   </script>
    </body>
 </html>
