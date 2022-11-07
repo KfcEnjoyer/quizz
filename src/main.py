@@ -101,19 +101,19 @@ def quiz():
     questions = testdb.get_questions('quizz')
     questions_num = testdb.get_num_of_questions('quizz')
     global index, score
-    quest = index+1
-    score = 0
     if request.method == "POST":
-        answer = request.form.getlist('option')
-        index += 1
-        if check_for_correct_answer(answer, questions[index][0]):
+        answer = request.form['option']
+        if check_for_correct_answer(answer, questions[index][1]):
             score += 1
-        if index == 20:
-            index = 1
-        return render_template('questions.html', score=score, question_num=quest, question=questions[index][0],
+        index += 1
+        if index == questions_num:
+            index = 0
+            score = 0
+        return render_template('questions.html', score=score, question_num=index+1, question=questions[index][0],
                                num_of_quest=questions_num, answer1=questions[index][1], answer2=questions[index][2],
                                answer3=questions[index][3], answer4=questions[index][4])
-    return render_template('questions.html', score=score, question_num=quest, question=questions[index][0],
+    index = 0
+    return render_template('questions.html', score=score, question_num=index+1, question=questions[index][0],
                            num_of_quest=questions_num, answer1=questions[index][1], answer2=questions[index][2],
                            answer3=questions[index][3], answer4=questions[index][4])
 
