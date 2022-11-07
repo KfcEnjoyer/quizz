@@ -5,24 +5,24 @@
    </head>
    <body>
       <div id="myHTMLWrapper">
-         <p>question1 {{question1}}</p>
+         <p id="quest"></p>
          <p>question2 {{question2}}</p>
          <div id="count">
-
+            {{i}}
          </div>
       </div>
-      <form>
-         <button type="button" value="g" id="butt" onclick="iPlus(i)">g</button>
+      <form action="/" method="post">
+         <button type="submit" value="g" id="butt" onclick="iPlus(i)">g</button>
          </form>
    <script>
-      var p = document.getElementById("count")
-      var i = 0
-      p.innerHTML = i;
-      const iPlus = () => {
-         i++
-         p.innerHTML = i;
-      };
-      p.addEventListener("click", iPlus);
+<!--      var p = document.getElementById("count")-->
+<!--      var i = {{i}}-->
+<!--      p.innerHTML = i;-->
+<!--      const iPlus = () => {-->
+<!--         i++-->
+<!--         p.innerHTML = i;-->
+<!--      };-->
+<!--      p.addEventListener("click", iPlus);-->
 
    </script>
    </body>

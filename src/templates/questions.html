@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -61,7 +61,7 @@
                     </div>
 
                </div>
-                <form method="get">
+
                 <span>
                     <input type="radio" id="option-one" name="option" class="radio" value="{{answer1}}" />
                     <label for="option-one" class="option" id="option-one-label">{{answer1}}</label>
@@ -87,11 +87,10 @@
 
 
             </div>
-
+            <form method="post">
             <div class="next-button-container">
-                <button onclick="handleNextQuestion()">Next Question</button>
-            </div>
-            </form>
+                <input type="submit" placeholder="Next Question">
+            </div></form>
         </div>
     </main>
     <script src="index.js"></script>
