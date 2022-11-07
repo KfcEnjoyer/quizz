@@ -91,18 +91,35 @@ def quiz_setup():
     return render_template('quiz_setup.html')
 
 
+global score, index
+score = 0
+index = 0
+
+
 @app.route("/quiz", methods=["POST", "GET"])
 def quiz():
-    score = 0
-    questions_list = []
     questions = testdb.get_questions('quizz')
     questions_num = testdb.get_num_of_questions('quizz')
-    for i in range(0, len(questions)):
-        if request.method == "POST":
+    global index, score
+    quest = index+1
+    score = 0
+    if request.method == "POST":
+        answer = request.form.getlist('option')
+        index += 1
+        if check_for_correct_answer(answer, questions[index][0]):
             score += 1
-        return render_template('questions.html', score=score, question_num=i+1, question=questions[i][0],
-                               num_of_quest=questions_num, answer1=questions[i][1], answer2=questions[i][2],
-                               answer3=questions[i][3], answer4=questions[i][4])
+        if index == 20:
+            index = 1
+        return render_template('questions.html', score=score, question_num=quest, question=questions[index][0],
+                               num_of_quest=questions_num, answer1=questions[index][1], answer2=questions[index][2],
+                               answer3=questions[index][3], answer4=questions[index][4])
+    return render_template('questions.html', score=score, question_num=quest, question=questions[index][0],
+                           num_of_quest=questions_num, answer1=questions[index][1], answer2=questions[index][2],
+                           answer3=questions[index][3], answer4=questions[index][4])
+
+
+def check_for_correct_answer(answer, correct_answer) -> bool:
+    return answer == correct_answer
 
 
 # 'test.html', number_of_questions=questions_num, question=questions[i][0], answer1=questions[i][1], answer2=questions[i][2], answer3=questions[i][3], answer4=questions[i][4]
