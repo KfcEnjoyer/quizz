@@ -11,7 +11,15 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/login.css') }}">
     <!-- FontAweome CDN Link for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
-
+    {% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <li><p style="color: white;">{{ message }}</p></li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
 </head>
 <body>
  <div class="background">
@@ -26,8 +34,9 @@
 
         <label for="pasword">Password</label>
         <input type="password" placeholder="Password" id="pasword" name="password">
-
+        <p>Don't have an account <a href="/register">register here</a></p>
         <button onclick="index2.html">Log In</button>
     </form>
+
 </body>
 </html>

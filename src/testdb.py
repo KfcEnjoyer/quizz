@@ -9,39 +9,16 @@ def connect():
     return connection
 
 
-def create_users_table():
+def check_if_table_exists(quiz_name: str):
     try:
         conn = connect()
         cur = conn.cursor()
-        cur.execute(
-            "CREATE TABLE IF NOT EXISTS users (id SERIAL PRIMARY KEY, username varchar(80) UNIQUE, "
-            "password varchar(80) NOT NULL)")
-        conn.commit()
-    except EOFError as err:
-        print("Error has occurred", err)
-    finally:
-        cur.close()
-        conn.close()
-
-
-def add_user(username, password):
-    try:
-        conn = connect()
-        cur = conn.cursor()
-        cur.execute(f"INSERT INTO users (username, password) VALUES ('{username}', '{password}')")
-        conn.commit()
-    except EOFError as err:
-        print("Error has occurred", err)
-    finally:
-        cur.close()
-        conn.close()
-
-
-def check_user(username, password):
-    try:
-        conn = connect()
-        cur = conn.cursor()
-        cur.execute(f"SELECT EXISTS(SELECT * FROM users WHERE username='{username}' AND password='{password}')")
+        cur.execute("SELECT EXISTS("
+                    " SELECT FROM"
+                    " pg_tables"
+                    " WHERE"
+                    " schemaname = 'public' AND"
+                    f" tablename = '{quiz_name}')")
         conn.commit()
         return cur.fetchone()[0]
     except EOFError as err:
@@ -55,7 +32,7 @@ def create_quiz_table(name: str):
     try:
         conn = connect()
         cur = conn.cursor()
-        cur.execute(f"CREATE TABLE IF NOT EXISTS {name} (id SERIAL PRIMARY KEY, question VARCHAR(300),"
+        cur.execute(f"CREATE TABLE IF NOT EXISTS {name} (table_name VARCHAR, id SERIAL PRIMARY KEY, question VARCHAR(300),"
                     f" correct_answer VARCHAR(200),"
                     f" incorrect_answer1 VARCHAR(200),"
                     f" incorrect_answer2 VARCHAR(200),"
@@ -72,12 +49,13 @@ def insert_questions(name: str, question: str, correct_answer: str, incorrect_an
     try:
         conn = connect()
         cur = conn.cursor()
-        cur.execute(f"INSERT INTO {name} (question,"
+        cur.execute(f"INSERT INTO {name} (table_name,"
+                    f" question,"
                     f" correct_answer, "
                     f" incorrect_answer1,"
                     f" incorrect_answer2,"
                     f" incorrect_answer3)"
-                    f"VALUES ('{question}', '{correct_answer}', '{incorrect_answer1}', '{incorrect_answer2}', '{incorrect_answer3}')")
+                    f"VALUES ('{name}', '{question}', '{correct_answer}', '{incorrect_answer1}', '{incorrect_answer2}', '{incorrect_answer3}')")
         conn.commit()
     except EOFError as err:
         print("Error has occurred", err)
@@ -105,6 +83,19 @@ def get_num_of_questions(name: str):
         cur = conn.cursor()
         cur.execute(f"SELECT count(*) FROM {name}")
         return cur.fetchone()[0]
+    except EOFError as err:
+        print("Error has occurred", err)
+    finally:
+        cur.close()
+        conn.close()
+
+
+def get_quiz_name(name: str):
+    try:
+        conn = connect()
+        cur = conn.cursor()
+        cur.execute(f"SELECT table_name FROM {name}")
+        return cur.fetchall()
     except EOFError as err:
         print("Error has occurred", err)
     finally:

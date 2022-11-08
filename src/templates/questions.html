@@ -1,14 +1,312 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/html">
+<html lang="en">
+<style>
+    *{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body{
+    height: 100%;
+}
+
+
+body{
+    font-family: 'Montserrat', serif;
+
+}
+
+main{
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: black;
+    background: url('../assets/background_image.jpg');
+    background-color : black;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.game-quiz-container{
+    width: 40rem;
+    height: 30rem;
+    background-color: lightgray;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    border-radius: 30px;
+}
+
+.game-details-container{
+    width: 80%;
+    height: 4rem;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.game-details-container h1{
+    font-size: 1.2rem;
+}
+
+.game-question-container{
+    width: 80%;
+    height: 8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid darkgray;
+    border-radius: 25px;
+}
+
+.game-question-container h1{
+    font-size: 1.1rem;
+    text-align: center;
+    padding: 3px;
+}
+
+.game-options-container{
+    width: 80%;
+    height: 12rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.game-options-container span{
+    width: 45%;
+    height: 3rem;
+    border: 2px solid darkgray;
+    border-radius: 20px;
+    overflow: hidden;
+}
+span label{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.3s;
+    font-weight: 600;
+    color: rgb(22, 22, 22);
+}
+
+span label:hover{
+    -ms-transform: scale(1.12);
+    -webkit-transform: scale(1.12);
+    transform: scale(1.12);
+    color: white;
+}
+
+input[type="radio"] {
+    position: relative;
+    display: none;
+}
+
+
+input[type=radio]:checked ~ .option {
+    background: paleturquoise;
+}
+
+.next-button-container{
+    width: 50%;
+    height: 3rem;
+    display: flex;
+    justify-content: center;
+}
+.next-button-container input{
+    width: 8rem;
+    height: 2rem;
+    border-radius: 10px;
+    background: none;
+    color: rgb(25, 25, 25);
+    font-weight: 600;
+    border: 2px solid gray;
+    cursor: pointer;
+    outline: none;
+}
+.next-button-container input:hover{
+    background-color: rgb(143, 93, 93);
+}
+
+.modal-container{
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    -webkit-animation: fadeIn 1.2s ease-in-out;
+    animation: fadeIn 1.2s ease-in-out;
+}
+
+.modal-content-container{
+    height: 20rem;
+    width: 25rem;
+    background-color: rgb(43, 42, 42);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    border-radius: 25px;
+}
+
+.modal-content-container h1{
+    font-size: 1.3rem;
+    height: 3rem;
+    color: lightgray;
+    text-align: center;
+}
+
+.grade-details{
+    width: 15rem;
+    height: 10rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.grade-details p{
+    color: white;
+    text-align: center;
+}
+
+.modal-button-container{
+    height: 2rem;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-button-container button{
+    width: 10rem;
+    height: 2rem;
+    background: none;
+    outline: none;
+    border: 1px solid rgb(252, 242, 241);
+    color: white;
+    font-size: 1.1rem;
+    cursor: pointer;
+    border-radius: 20px;
+}
+.modal-button-container button:hover{
+    background-color: rgb(83, 82, 82);
+}
+
+.log-out{
+    position: relative;
+    width: 20rem;
+    height: 2rem;
+    text-align: center;
+    background: lightgray;
+    outline: none;
+    border: 1px solid rgb(252, 242, 241);
+    color: white;
+    font-size: 1.1rem;
+    border-radius: 20px;
+    bottom: -20px;
+}
+
+@media(min-width : 300px) and (max-width : 350px){
+    .game-quiz-container{
+        width: 90%;
+        height: 80vh;
+     }
+     .game-details-container h1{
+        font-size: 0.8rem;
+     }
+
+     .game-question-container{
+        height: 6rem;
+     }
+     .game-question-container h1{
+       font-size: 0.9rem;
+    }
+
+    .game-options-container span{
+        width: 90%;
+        height: 2.5rem;
+    }
+    .game-options-container span label{
+        font-size: 0.8rem;
+    }
+    .modal-content-container{
+        width: 90%;
+        height: 25rem;
+    }
+
+    .modal-content-container h1{
+        font-size: 1.2rem;
+    }
+}
+
+@media(min-width : 350px) and (max-width : 700px){
+   .game-quiz-container{
+       width: 90%;
+       height: 80vh;
+    }
+    .game-details-container h1{
+        font-size: 1rem;
+    }
+
+    .game-question-container{
+        height: 8rem;
+    }
+
+    .game-question-container h1{
+        font-size: 0.9rem;
+     }
+
+    .game-options-container span{
+        width: 90%;
+    }
+    .modal-content-container{
+        width: 90%;
+        height: 25rem;
+    }
+    .modal-content-container h1{
+        font-size: 1.2rem;
+    }
+}
+
+
+
+@keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity:1 ;}
+  }
+
+  @-webkit-keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
+  }
+</style>
 <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, user-scalable=no">
 
-<!--        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">-->
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
     <link href="//fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700,800&amp;subset=cyrillic" rel="stylesheet">
     <title>Awesome Quiz </title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/questionwebsite.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='questionwebsite.css') }}">
     <!-- FontAweome CDN Link for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
 </head>
@@ -20,6 +318,7 @@
             <div class="modal-content-container">
 
                 <h1>Congratulations, Quiz Completed.</h1>
+
                 <div class="grade-details">
                     <p>Attempts : 10</p>
                     <p>Wrong Answers : <span id="wrong-answers"></span></p>
@@ -35,12 +334,12 @@
             </div>
         </div>
 <!-- end of modal of quiz details-->
-
+<form class = 'gameoverall' method="post">
         <div class="game-quiz-container">
-
+            <h3> {{quiz_name}} </h3>
             <div class="game-details-container">
-                <h1>Score : {{score}}<span id="player-score"></span> / {{num_of_quest}}</h1>
-                <h1> Question : {{question_num}}<span id="question-number"></span> / {{num_of_quest}}</h1>
+                <h1>Score : <span id="player-score"></span>{{score}} / {{num_of_quest}}</h1>
+                <h1> Question : <span id="question-number"></span>{{question_num}} / {{num_of_quest}}</h1>
             </div>
 
             <div class="game-question-container">
@@ -61,29 +360,43 @@
                     </div>
 
                </div>
-                <form method="post">
+
                 <span>
-                    <input type="radio" id="option-one" name="option" class="radio" value="{{answer1}}">
+                    <input type="radio" id="option-one" name="option" class="radio" value="{{answer1}}" required>
                     <label for="option-one" class="option" id="option-one-label">{{answer1}}</label>
                 </span>
+
+
                 <span>
-                    <input type="radio" id="option-two" name="option" class="radio" value="{{answer2}}">
+                    <input type="radio" id="option-two" name="option" class="radio" value="{{answer2}}" required>
                     <label for="option-two" class="option" id="option-two-label">{{answer2}}</label>
                 </span>
+
+
                 <span>
-                    <input type="radio" id="option-three" name="option" class="radio" value="{{answer3}}">
+                    <input type="radio" id="option-three" name="option" class="radio" value="{{answer3}}" required>
                     <label for="option-three" class="option" id="option-three-label">{{answer3}}</label>
                 </span>
+
+
                 <span>
-                    <input type="radio" id="option-four" name="option" class="radio" value="{{answer4}}">
+                    <input type="radio" id="option-four" name="option" class="radio" value="{{answer4}}" required>
                     <label for="option-four" class="option" id="option-four-label">{{answer4}}</label>
                 </span>
 
+
             </div>
+
             <div class="next-button-container">
-                <input type="submit" placeholder="Next Question" value="Next Question">
-            </div></form>
+                <input type="submit" placeholder="Next Question">
+            </div>
+
         </div>
+    </form>
+        <div class="log-out">
+        <p><a href="/log-out">click here to log-out</a></p>
+            </div>
     </main>
+
 </body>
 </html>
