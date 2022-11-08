@@ -26,8 +26,7 @@ def login():
         passwd = request.form['password']
         if userdb.check_user(username, passwd):
             session['username'] = username
-            session['id'] = userdb.get_user(session['username'])
-            user_id = session['id']
+            user_id = userdb.get_user(username)
             return redirect("/quiz_setup")
         else:
             flash('Login is invalid!')
@@ -80,6 +79,7 @@ def check_for_correct_answer(answer, correct_answer) -> bool:
 
 
 global quiz_name
+
 
 @app.route("/quiz_setup", methods=["POST", "GET"])
 def quiz_setup():
