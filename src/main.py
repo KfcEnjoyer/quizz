@@ -138,7 +138,7 @@ def quiz():
                 userdb.insert_results(user_id, quiz_name, score)
                 temp = score
                 score = 0
-                return render_template('quiz_end.html', score=temp)
+                return redirect('/quiz_end')
             return render_template('questions.html', score=score, question_num=index + 1, question=questions[index][0],
                                    num_of_quest=questions_num, answer1=questions[index][1], answer2=questions[index][2],
                                    answer3=questions[index][3], answer4=questions[index][4])
@@ -153,6 +153,13 @@ def quiz():
 def check_for_correct_answer(answer, correct_answer) -> bool:
     return answer == correct_answer
 
+
+@app.route('/quiz_end')
+def quiz_end():
+    if "username" in session:
+        global quiz_name, user_id
+        final_score = userdb.get_results(user_id, quiz_name)
+        return render_template('quiz_end.html', score=final_score)
 
 # 'test.html', number_of_questions=questions_num, question=questions[i][0], answer1=questions[i][1], answer2=questions[i][2], answer3=questions[i][3], answer4=questions[i][4]
 

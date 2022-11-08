@@ -92,3 +92,16 @@ def insert_results(ID: int, quiz_name: str, score: int):
     finally:
         cur.close()
         conn.close()
+
+
+def get_results(userid: int, quiz_name: str):
+    try:
+        conn = connect()
+        cur = conn.cursor()
+        cur.execute(f"SELECT max(score) FROM results WHERE userid='{userid}' and quiz_name='{quiz_name}'")
+        return cur.fetchone()[0]
+    except EOFError as err:
+        print("Error has occurred", err)
+    finally:
+        cur.close()
+        conn.close()
